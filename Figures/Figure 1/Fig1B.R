@@ -11,7 +11,6 @@ groups <- c("Amino acids",
             "Ketone bodies", "Lipids and lipoproteins")
 
 ## Figure 1. Metabolomic associations
-# Load the data
 mind_mb <- read_excel("05_Supplementary Tables.xlsx", sheet = "ST04",
                       skip=1) %>% 
   data.frame() %>%
@@ -25,11 +24,7 @@ mind_mb <- read_excel("05_Supplementary Tables.xlsx", sheet = "ST04",
            (Estimate...5 < 0 & Estimate...10 < 0 & Estimate...16 < 0)) %>%
   filter(P.FDR...8<0.05 & P.FDR...13<0.05 & P.FDR...19<0.05) %>% 
   arrange(Group, Estimate...5)
-# mind_mb <- read_excel("05_Supplementary Tables.xlsx", sheet = "ST04",
-#                       skip=1) %>% 
-#   filter((Estimate...5 > 0 & Estimate...10 > 0) | 
-#            (Estimate...5 < 0 & Estimate...10 < 0)) %>%
-#   filter(`P-FDR...8`<0.05 & `P-FDR...13`<0.05)
+
 mind_mb_sig <- mind_mb %>% 
   select(Metabolite,
          Group,
@@ -53,12 +48,9 @@ mind_mb_sig <- mind_mb %>%
 plot_heat <- mind_mb_sig %>% 
   ggplot(aes(x = Cohort, y = Metabolite, fill = value)) +
   geom_tile() + 
-  # geom_text(aes(label = Coef)) +
   coord_fixed(ratio = 0.75) +
-  # ylim(0, 2) + 
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1),
-        # axis.text.y = element_blank(),
         axis.title.x = element_blank(),
         axis.title.y = element_blank()) + 
   scale_fill_gradient2(low = "#2A6EBB", high = "#CD202C") + 
